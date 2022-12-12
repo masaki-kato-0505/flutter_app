@@ -1,115 +1,105 @@
 import 'package:flutter/material.dart';
 
+// 最初に呼び出されるファンクション
 void main() {
   runApp(const MyApp());
 }
 
+// メインのクラス
 class MyApp extends StatelessWidget {
+  // インスタンス生成時にコンストラクタを呼び出し変数を初期化
+  // keyはWidgetを一意に識別するための変数として利用されるが、
+  // TodoリストのようにWidgetを入れ替えたりするようなときは使うが、それ以外はほとんど使われない
+  // superは親クラス（ここではStatelessクラス）のkeyを参照している。
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // MyAppにextendsでStatelessWidgetを継承させて、その性質をbuild()で上書きする
+  // StatelessWidgetもクラスであり、buildメソッドを持ち、Widgetもしくはテキストを返す
+  // build()メソッドを持つ、StatelessWidgetをMyAppクラスが継承し、
+  // MyAppクラス内のbuild()メソッドは@overrideすることで再定義できる。
+  // 親クラスであるStatelessWidgetで定義されているbuild()メソッドをMyAppクラスで再定義することができる
   @override
   Widget build(BuildContext context) {
+    // マテリアルデザインを行うためのクラス（MaterialApp()）
     return MaterialApp(
+      //デバックモードで実行する際に、画面右上にデバック中の表記を行うか否か
+      debugShowCheckedModeBanner: false,
+      //アプリケーション題名
       title: 'Flutter Demo',
+      //テーマ（アプリケーションの背景色やレイアウトなど）
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      // ホームに表示したいWidgetを描画するクラスを指定する
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
+// StatefulWidgetは画面UIの一部が動的に変化する可能性がある場合に有用
+// ユーザーから受け取った（ユーザーに入力された）情報を受けて、画面を再描画（リビルド）するWidget
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
   @override
+  // StatefulWidgetがcreateState()メソッドでStateを持つ状態に描画する
+  // クラス名として、State型のMyHomePageという名称で_MyHomePageState()クラスをインスタンス化する。
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+// Stateクラスを継承する
+// Stateクラスにはbuildメソッドを持っており、これによりWidgetの塊であるWidgetツリー（Scaffold以下）を返す
+// StatefulWidgetとStateは1組になっており、Stateがいろんな情報を持ち、setState()でState自身の状態が変わったという通知を行い、
+// StatefulWidgetに画面の再描画をするように依頼している。
+// StatefulWidget刃あまり使わない
+//   ◆離れたWidget間での状態変更を通知しにくい（StateクラスとStatefulWidgetクラスが対になって動作するため）
+//   ◆パフォーマンスが下がることがある（状況によるが、いちいち全てのWidgetを再描画するため）
+//   ◆メンテナンスしにくい（Widgetやロジックを全部Stateにつめこんでいるため）
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  // クラス内で定義したメソッド
+  // カウンターを1増やす
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
 
+  // クラスで表示される画面のWidgetツリー一覧
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      // アプリケーションバー（画面のヘッダー）
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+      // HTMLのbodyと概ね同じ
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+        // ColumnはWidgetを縦に並べるもの
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
             ),
             Text(
+              // $を付与することで文字列中に変数の埋め込みができる
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
       ),
+      // 画面下部に設置可能なボタン
       floatingActionButton: FloatingActionButton(
+        // ボタンクリック時に呼び出すメソッド
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

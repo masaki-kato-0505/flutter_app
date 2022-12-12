@@ -53,7 +53,7 @@ class MyHomePage extends StatefulWidget {
 // Stateクラスにはbuildメソッドを持っており、これによりWidgetの塊であるWidgetツリー（Scaffold以下）を返す
 // StatefulWidgetとStateは1組になっており、Stateがいろんな情報を持ち、setState()でState自身の状態が変わったという通知を行い、
 // StatefulWidgetに画面の再描画をするように依頼している。
-// StatefulWidget刃あまり使わない
+// StatefulWidgetはあまり使わない
 //   ◆離れたWidget間での状態変更を通知しにくい（StateクラスとStatefulWidgetクラスが対になって動作するため）
 //   ◆パフォーマンスが下がることがある（状況によるが、いちいち全てのWidgetを再描画するため）
 //   ◆メンテナンスしにくい（Widgetやロジックを全部Stateにつめこんでいるため）
